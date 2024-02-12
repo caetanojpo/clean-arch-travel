@@ -43,7 +43,7 @@ public class TestimonialController {
         return ResponseEntity.created(uri).body(testimonialResponse);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<TestimonialResponse> findById(@PathVariable Long id) {
         var testimonialResponse = TestimonialMapper.INSTANCE.toTestimonialResponse(find.byId(id));
 
@@ -60,7 +60,7 @@ public class TestimonialController {
 
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<TestimonialResponse> update(@PathVariable Long id, TestimonialRequest testimonialRequest) {
         var testimonial = TestimonialMapper.INSTANCE.toTestimonial(testimonialRequest);
         var testimonialResponse = TestimonialMapper.INSTANCE.toTestimonialResponse(update.execute(id, testimonial));
@@ -69,7 +69,7 @@ public class TestimonialController {
 
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> remove(@PathVariable Long id) {
         remove.execute(id);
 
