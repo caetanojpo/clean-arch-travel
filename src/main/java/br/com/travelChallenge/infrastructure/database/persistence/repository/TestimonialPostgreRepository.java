@@ -3,10 +3,12 @@ package br.com.travelChallenge.infrastructure.database.persistence.repository;
 import br.com.travelChallenge.domain.model.Testimonial;
 import br.com.travelChallenge.domain.repository.TestimonialRepository;
 import br.com.travelChallenge.infrastructure.database.persistence.springdata.TestimonialJpaRepository;
+import br.com.travelChallenge.infrastructure.database.schema.TestimonialSchema;
 import br.com.travelChallenge.infrastructure.mapper.TestimonialMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -23,16 +25,23 @@ public class TestimonialPostgreRepository implements TestimonialRepository {
     }
 
     @Override
+    public List<Testimonial> findRandomThree() {
+        return jpaRepository.findRandomThree()
+                .stream().map(TestimonialMapper.INSTANCE::toTestimonial).toList();
+    }
+
+    @Override
     public Testimonial save(Testimonial testimonial) {
         return mapper.toTestimonial(
                 jpaRepository.save(mapper.toTestimonialSchema(testimonial)));
     }
 
     @Override
-    public Testimonial update(Long id, Testimonial testimonial) {
+    public Testimonial update(Testimonial testimonial) {
         return mapper.toTestimonial(jpaRepository.save(
                 mapper.toTestimonialSchema(testimonial)));
     }
+
 
     @Override
     public void delete(Long id) {

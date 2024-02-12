@@ -1,5 +1,6 @@
 package br.com.travelChallenge.infrastructure.http.controller;
 
+import br.com.travelChallenge.domain.model.Testimonial;
 import br.com.travelChallenge.infrastructure.http.dto.request.TestimonialRequest;
 import br.com.travelChallenge.infrastructure.http.dto.response.TestimonialResponse;
 import br.com.travelChallenge.infrastructure.mapper.TestimonialMapper;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,6 +48,16 @@ public class TestimonialController {
         var testimonialResponse = TestimonialMapper.INSTANCE.toTestimonialResponse(find.byId(id));
 
         return ResponseEntity.ok(testimonialResponse);
+    }
+
+    @GetMapping("/random")
+    public ResponseEntity<List<TestimonialResponse>> randomThree() {
+        List<Testimonial> testimonials = find.getThree();
+
+        List<TestimonialResponse> response = testimonials.stream()
+                .map(TestimonialMapper.INSTANCE::toTestimonialResponse).toList();
+        return ResponseEntity.ok(response);
+
     }
 
     @PutMapping("{id}")
